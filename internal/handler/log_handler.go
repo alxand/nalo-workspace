@@ -1,5 +1,9 @@
+package handler
+
 import (
+	"github.com/alxand/nalo-workspace/internal/domain/models"
 	"github.com/go-playground/validator/v10"
+	"github.com/gofiber/fiber"
 )
 
 var validate = validator.New()
@@ -9,12 +13,12 @@ var validate = validator.New()
 // @Tags logs
 // @Accept json
 // @Produce json
-// @Param log body models.DailyLog true "Daily log data"
-// @Success 201 {object} models.DailyLog
+// @Param log body models.DailyTask true "Daily log data"
+// @Success 201 {object} models.DailyTask
 // @Failure 400 {object} map[string]string
 // @Router /logs [post]
 func (h *LogHandler) CreateLog(c *fiber.Ctx) error {
-	var log models.DailyLog
+	var log models.DailyTask
 	if err := c.BodyParser(&log); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
 	}

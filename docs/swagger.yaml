@@ -1,0 +1,34 @@
+definitions:
+  models.DailyTask:
+    type: object
+info:
+  contact: {}
+paths:
+  /logs:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Daily log data
+        in: body
+        name: log
+        required: true
+        schema:
+          $ref: '#/definitions/models.DailyTask'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.DailyTask'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new daily log
+      tags:
+      - logs
+swagger: "2.0"

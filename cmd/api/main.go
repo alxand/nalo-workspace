@@ -10,6 +10,7 @@ import (
 	repository "github.com/alxand/nalo-workspace/internal/repository/postgres"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/joho/godotenv"
 
 	_ "github.com/alxand/nalo-workspace/docs" // swagger docs
 
@@ -18,8 +19,17 @@ import (
 
 func main() {
 	// Load env vars, for demo just hardcode DSN and JWT_SECRET here or use os.Getenv
-	dsn := "host=localhost user=postgres password=postgres dbname=dailylog port=5432 sslmode=disable"
-	os.Setenv("JWT_SECRET", "your_jwt_secret_key_here")
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("No .env file found, using system environment variables")
+	}
+
+	dsn := os.Getenv("DSN")
+	if dsn == "" {
+		log.Fatal("DSN is not set")
+	}
+
+	os.Setenv("JWT_SECRET", os.Getenv("JWT_SECRET")) // already required by GenerateJWT
 
 	db := repository.InitDB(dsn)
 	repo := repository.NewGormLogRepository(db)
