@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/alxand/nalo-workspace/internal/domain/models"
-	"github.com/alxand/nalo-workspace/internal/repository/postgres/repository"
+	repository "github.com/alxand/nalo-workspace/internal/repository/postgres"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
