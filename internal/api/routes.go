@@ -12,7 +12,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func RegisterLogRoutes(app *fiber.App, repo repository.GormLogRepository) {
+func RegisterLogRoutes(app *fiber.App, repo *repository.GormLogRepository) {
 	// Load .env file
 	_ = godotenv.Load()
 
@@ -32,7 +32,7 @@ func RegisterLogRoutes(app *fiber.App, repo repository.GormLogRepository) {
 }
 
 type LogHandler struct {
-	Repo repository.LogRepository
+	Repo repository.GormLogRepository
 }
 
 func (h *LogHandler) CreateLog(c *fiber.Ctx) error {

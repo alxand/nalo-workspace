@@ -15,7 +15,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func setupTestApp() (*fiber.App, repository.GormLogRepository) {
+func setupTestApp() (*fiber.App, *repository.GormLogRepository) {
 	db, _ := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
 	_ = db.AutoMigrate(&models.DailyTask{})
 	repo := repository.NewGormLogRepository(db)
