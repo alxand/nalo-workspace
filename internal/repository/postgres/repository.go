@@ -37,19 +37,19 @@ func InitDB(dsn string) *gorm.DB {
 	return db
 }
 
-type GormLogRepository struct {
+type DailyTaskRepository struct {
 	DB *gorm.DB
 }
 
-func NewGormLogRepository(db *gorm.DB) *GormLogRepository {
-	return &GormLogRepository{DB: db}
+func NewDailyTaskRepository(db *gorm.DB) *DailyTaskRepository {
+	return &DailyTaskRepository{DB: db}
 }
 
-func (r *GormLogRepository) Create(log *models.DailyTask) error {
+func (r *DailyTaskRepository) Create(log *models.DailyTask) error {
 	return r.DB.Create(log).Error
 }
 
-func (r *GormLogRepository) GetByDate(date string) ([]models.DailyTask, error) {
+func (r *DailyTaskRepository) GetByDate(date string) ([]models.DailyTask, error) {
 	var logs []models.DailyTask
 	parsedDate, err := time.Parse("2006-01-02", date)
 	if err != nil {
@@ -61,10 +61,10 @@ func (r *GormLogRepository) GetByDate(date string) ([]models.DailyTask, error) {
 	return logs, err
 }
 
-func (r *GormLogRepository) Update(log *models.DailyTask) error {
+func (r *DailyTaskRepository) Update(log *models.DailyTask) error {
 	return r.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(log).Error
 }
 
-func (r *GormLogRepository) Delete(id int64) error {
+func (r *DailyTaskRepository) Delete(id int64) error {
 	return r.DB.Delete(&models.DailyTask{}, id).Error
 }

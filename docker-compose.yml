@@ -23,6 +23,7 @@ services:
       - DSN=host=db user=postgres password=postgres dbname=dailylog port=5432 sslmode=disable
     ports:
       - "3000:3000"
+    command: go run ./cmd/api/main.go
 
 volumes:
   pgdata:

@@ -4,7 +4,6 @@ go 1.23
 
 require (
 	github.com/go-playground/validator/v10 v10.26.0
-	github.com/gofiber/fiber v1.14.6
 	github.com/gofiber/fiber/v2 v2.52.8
 	github.com/gofiber/swagger v1.1.1
 	github.com/golang-jwt/jwt/v4 v4.5.2

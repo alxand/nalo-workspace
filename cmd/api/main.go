@@ -32,7 +32,7 @@ func main() {
 	os.Setenv("JWT_SECRET", os.Getenv("JWT_SECRET")) // already required by GenerateJWT
 
 	db := repository.InitDB(dsn)
-	repo := repository.NewGormLogRepository(db)
+	repo := repository.NewDailyTaskRepository(db)
 
 	app := fiber.New()
 	app.Use(logger.New())
@@ -50,7 +50,7 @@ func main() {
 	})
 
 	// Protected log routes
-	api.RegisterLogRoutes(app, repo)
+	api.RegisterDailyTaskRoutes(app, *repo)
 
 	port := 3000
 	fmt.Printf("Starting server on :%d\n", port)

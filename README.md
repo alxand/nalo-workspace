@@ -1,10 +1,10 @@
-# DailyLog API
+# DailyTask API
 
-A Go Fiber + GORM backend API for managing daily logs, secured with JWT authentication.
+A Go Fiber + GORM backend API for managing daily tasks, secured with JWT authentication.
 
 ## Features
 
-- CRUD operations on daily logs and related entities
+- CRUD operations on daily tasks and related entities
 - JWT-based authentication and authorization
 - PostgreSQL database integration via GORM
 - Swagger/OpenAPI documentation at `/swagger/index.html`

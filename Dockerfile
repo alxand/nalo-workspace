@@ -1,4 +1,4 @@
-FROM golang:1.20-alpine
+FROM golang:1.24-alpine
 
 WORKDIR /app
 
@@ -13,8 +13,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o nalo_workspace ./cmd/api
+RUN go build -v -o nalo_workspace ./cmd/api/main.go
 
 EXPOSE 3000
 
-CMD ["./nalo_workspace/cmd/api/"]
