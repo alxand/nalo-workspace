@@ -2,18 +2,17 @@
 package repository
 
 import (
-	"log"
 	"time"
 
 	"github.com/alxand/nalo-workspace/internal/domain/models"
-
-	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 // Add GORM model annotations
 
-func migrate(db *gorm.DB) error {
+type TaskMigrator struct{}
+
+func (m *TaskMigrator) Migrate(db *gorm.DB) error {
 	return db.AutoMigrate(
 		&models.DailyTask{},
 		&models.Deliverable{},
@@ -24,17 +23,6 @@ func migrate(db *gorm.DB) error {
 		&models.Note{},
 		&models.Comment{},
 	)
-}
-
-func InitDB(dsn string) *gorm.DB {
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		log.Fatalf("failed to connect to database: %v", err)
-	}
-	if err := migrate(db); err != nil {
-		log.Fatalf("failed to run migration: %v", err)
-	}
-	return db
 }
 
 type DailyTaskRepository struct {
@@ -61,10 +49,49 @@ func (r *DailyTaskRepository) GetByDate(date string) ([]models.DailyTask, error)
 	return logs, err
 }
 
-func (r *DailyTaskRepository) Update(log *models.DailyTask) error {
-	return r.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(log).Error
+func (r *DailyTaskRepository) Update(log *models.DailyTask) (*models.DailyTask, error) {
+	err := r.DB.Session(&gorm.Session{FullSaveAssociations: true}).Save(log).Error
+	if err != nil {
+		return nil, err
+	}
+
+	// Reload the updated task with all associations
+	var updated models.DailyTask
+	if err := r.DB.Preload("Deliverables").
+		Preload("Activities").
+		Preload("ProductFocus").
+		Preload("NextSteps").
+		Preload("Challenges").
+		Preload("Notes").
+		Preload("Comments").
+		First(&updated, log.ID).Error; err != nil {
+		return nil, err
+	}
+
+	return &updated, nil
 }
 
 func (r *DailyTaskRepository) Delete(id int64) error {
 	return r.DB.Delete(&models.DailyTask{}, id).Error
+}
+
+func (r *DailyTaskRepository) GetByID(id int64) (*models.DailyTask, error) {
+	var task models.DailyTask
+	err := r.DB.First(&task, id).Error
+	if err != nil {
+		return nil, err
+	}
+	return &task, nil
+}
+
+func (r *DailyTaskRepository) GetByDateAndUser(date string, userID int64) ([]models.DailyTask, error) {
+	var tasks []models.DailyTask
+	err := r.DB.Where("date = ? AND user_id = ?", date, userID).Find(&tasks).Error
+	return tasks, err
+}
+
+func (r *DailyTaskRepository) List(limit, offset int) ([]models.DailyTask, error) {
+	var tasks []models.DailyTask
+	err := r.DB.Limit(limit).Offset(offset).Find(&tasks).Error
+	return tasks, err
 }

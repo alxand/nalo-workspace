@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   db:
     image: postgres:15
@@ -9,21 +11,39 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   app:
     build: .
-    env_file:
-      - .env
-    volumes:
-      - ./:/app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
-      - JWT_SECRET=your_jwt_secret_key_here
-      - DSN=host=db user=postgres password=postgres dbname=dailylog port=5432 sslmode=disable
+      - PORT=3000
+      - HOST=0.0.0.0
+      - READ_TIMEOUT=30s
+      - WRITE_TIMEOUT=30s
+      - IDLE_TIMEOUT=60s
+      - DB_DRIVER=postgres
+      - DSN=host=db user=postgres password=postgres dbname=dailylog port=5432 sslmode=disable TimeZone=UTC
+      - DB_MAX_CONNS=10
+      - JWT_SECRET=your-super-secret-jwt-key-here-change-in-production
+      - JWT_EXPIRATION=24h
+      - LOG_LEVEL=info
+      - LOG_FORMAT=json
     ports:
       - "3000:3000"
-    command: go run ./cmd/api/main.go
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    command: ["./nalo-workspace"]
 
 volumes:
   pgdata:

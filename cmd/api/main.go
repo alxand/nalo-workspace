@@ -1,58 +1,59 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"context"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
-	"github.com/alxand/nalo-workspace/internal/api"
-
-	repository "github.com/alxand/nalo-workspace/internal/repository/postgres"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/joho/godotenv"
-
-	_ "github.com/alxand/nalo-workspace/docs" // swagger docs
-
-	swagger "github.com/gofiber/swagger"
+	"github.com/alxand/nalo-workspace/internal/container"
+	"github.com/alxand/nalo-workspace/internal/pkg/logger"
+	"github.com/alxand/nalo-workspace/internal/server"
+	"go.uber.org/zap"
 )
 
 func main() {
-	// Load env vars, for demo just hardcode DSN and JWT_SECRET here or use os.Getenv
-	err := godotenv.Load()
+	// Initialize container with all dependencies
+	container, err := container.NewContainer()
 	if err != nil {
-		log.Println("No .env file found, using system environment variables")
+		logger.Fatal("Failed to initialize container", zap.Error(err))
 	}
+	defer container.Close()
 
-	dsn := os.Getenv("DSN")
-	if dsn == "" {
-		log.Fatal("DSN is not set")
-	}
+	// Create and configure the application
+	app := server.NewApp(container.Config, container.Logger)
+	app.SetupRoutes(
+		container.AuthHandler,
+		container.DailyTaskHandler,
+		container.UserHandler,
+		container.ContinentHandler,
+		container.CountryHandler,
+		container.CompanyHandler,
+		container.AuthService,
+	)
 
-	os.Setenv("JWT_SECRET", os.Getenv("JWT_SECRET")) // already required by GenerateJWT
-
-	db := repository.InitDB(dsn)
-	repo := repository.NewDailyTaskRepository(db)
-
-	app := fiber.New()
-	app.Use(logger.New())
-
-	// Swagger route
-	app.Get("/swagger/*", swagger.HandlerDefault)
-
-	// Public route for getting a JWT token (demo only)
-	app.Post("/login", func(c *fiber.Ctx) error {
-		token, err := api.GenerateJWT()
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	// Start server in a goroutine
+	go func() {
+		if err := app.Start(); err != nil {
+			container.Logger.Fatal("Failed to start server", zap.Error(err))
 		}
-		return c.JSON(fiber.Map{"token": token})
-	})
+	}()
 
-	// Protected log routes
-	api.RegisterDailyTaskRoutes(app, *repo)
+	// Wait for interrupt signal to gracefully shutdown the server
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
 
-	port := 3000
-	fmt.Printf("Starting server on :%d\n", port)
-	log.Fatal(app.Listen(fmt.Sprintf(":%d", port)))
+	container.Logger.Info("Shutting down server...")
+
+	// Graceful shutdown with timeout
+	_, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	if err := app.Shutdown(); err != nil {
+		container.Logger.Error("Error during server shutdown", zap.Error(err))
+	}
+
+	container.Logger.Info("Server stopped")
 }

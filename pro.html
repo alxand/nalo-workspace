@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 12-Month Tech Billionaire Blueprint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #00AEEF, #004AAD);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .kpi-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #1F2937;
+            margin: auto;
+            padding: 24px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #00AEEF;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    
+    <!-- Narrative Plan:
+        1. Introduction: Set the stage, highlight the rarity of 12-month billionaire status.
+        2. Landscape: Visualize the current unicorn market, average time to unicorn by sector, and sector distribution.
+        3. Sectors: Detail high-potential sectors with LLM-powered trend explanations.
+        4. Playbook: Outline the key strategic steps for hyper-growth.
+        5. Funding: Explain the VC funding landscape and investment criteria.
+        6. Risks: Highlight major risks with LLM-powered mitigation suggestions.
+        7. Conclusion: Summarize the overarching message.
+    -->
+    <!-- Visualization Choices:
+        - KPI Cards (Inform): Large numbers for key stats.
+        - Bar Chart (Compare/Change): Average time to unicorn by sector. (Chart.js, Canvas)
+        - Doughnut Chart (Compare/Inform): Unicorn sector distribution. (Chart.js, Canvas)
+        - Sector Cards with Icons (Inform): High-potential sectors. (HTML/CSS, Unicode)
+        - Flow Chart (Organize): Founder's playbook. (HTML/CSS)
+        - Pyramid Diagram (Organize): Funding stages. (HTML/CSS)
+        - List (Organize): VC investment criteria. (HTML/CSS)
+        - Risk Cards with Icons (Inform): Major risks. (HTML/CSS, Unicode)
+        - LLM-powered text (Inform): Trend explanations and risk mitigation strategies.
+    -->
+
+    <header class="text-center py-12 md:py-20 px-4" style="background: radial-gradient(circle, rgba(0,74,173,0.3) 0%, rgba(10,10,20,0) 60%), #0a0a14;">
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 gradient-text">The 12-Month Tech Billionaire Blueprint</h1>
+        <p class="max-w-3xl mx-auto text-lg md:text-xl text-gray-300">
+            An analysis of the hyper-growth strategies, market dynamics, and immense challenges behind the audacious goal of achieving a billion-dollar valuation in one year.
+        </p>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+        <section id="introduction" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">The Audacious Goal: Grounded in Reality</h2>
+                <p class="max-w-3xl mx-auto text-gray-400">The aspiration to achieve billionaire status in 12 months is an extreme outlier. The data reveals an environment of rare success, where only a fraction of startups reach unicorn status, typically over many years. This section sets the stage by contrasting the ambitious goal with the statistical realities of the venture landscape.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="p-8 rounded-xl shadow-2xl kpi-card">
+                    <p class="text-5xl md:text-6xl font-black text-cyan-400">7.2 Years</p>
+                    <p class="mt-2 text-lg font-semibold text-gray-300">Average Time to Unicorn</p>
+                    <p class="mt-1 text-sm text-gray-500">The typical journey to a $1B+ valuation is a marathon, not a sprint.</p>
+                </div>
+                <div class="p-8 rounded-xl shadow-2xl kpi-card">
+                    <p class="text-5xl md:text-6xl font-black text-cyan-400">&lt;0.1%</p>
+                    <p class="mt-2 text-lg font-semibold text-gray-300">Chance of Unicorn Success</p>
+                    <p class="mt-1 text-sm text-gray-500">The unicorn club is extraordinarily exclusive, highlighting the rarity of this feat.</p>
+                </div>
+                <div class="p-8 rounded-xl shadow-2xl kpi-card">
+                    <p class="text-5xl md:text-6xl font-black text-cyan-400">8 Months</p>
+                    <p class="mt-2 text-lg font-semibold text-gray-300">Fastest Unicorn: Anthropic</p>
+                    <p class="mt-1 text-sm text-gray-500">An extreme AI outlier, proving hyper-speed is possible but exceptionally rare.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="landscape" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">The Modern Gold Rush: The Unicorn Landscape</h2>
+                <p class="max-w-3xl mx-auto text-gray-400">From just 39 companies in 2013, the unicorn club has exploded to over 1,200, with a collective valuation exceeding $5.9 trillion. This section visualizes the scale of the market and the intense competition to join its ranks.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-center mb-4">Average Time to Unicorn by Sector</h3>
+                    <p class="text-sm text-gray-400 text-center mb-4">While the overall average is 7.2 years, the AI/ML sector shows a significantly faster trajectory, making it the most viable, albeit still challenging, path for hyper-growth.</p>
+                    <div class="chart-container h-96 md:h-[450px]">
+                        <canvas id="timeToUnicornChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-center mb-4">Unicorn Sector Distribution</h3>
+                    <p class="text-sm text-gray-400 text-center mb-4">Fintech leads in the number of unicorn companies, but AI/ML accounts for a disproportionately high share of total valuation, signaling strong investor confidence and capital efficiency.</p>
+                    <div class="chart-container h-96 md:h-[450px]">
+                        <canvas id="unicornSectorChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sectors" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Where to Place Your Bets: High-Potential Sectors</h2>
+                <p class="max-w-3xl mx-auto text-gray-400">Achieving hyper-growth requires targeting sectors with massive addressable markets and strong tailwinds. While AI is the clear frontrunner for speed, other sectors like Fintech, HealthTech, and Climate Tech offer significant disruptive potential.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center text-center">
+                    <div class="text-4xl mb-4">🧠</div>
+                    <h3 class="text-xl font-bold mb-2">AI & Machine Learning</h3>
+                    <p class="text-sm text-gray-400">The fastest path to unicorn status, driven by foundation models and enterprise tools. Represents 16% of total unicorn valuation.</p>
+                    <button class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors" onclick="showTrendExplanation('AI & Machine Learning')">✨ Explain Trend</button>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center text-center">
+                    <div class="text-4xl mb-4">💰</div>
+                    <h3 class="text-xl font-bold mb-2">Fintech</h3>
+                    <p class="text-sm text-gray-400">The largest sector by unicorn count (242), thriving on disrupting traditional finance with better user experiences and novel business models.</p>
+                    <button class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors" onclick="showTrendExplanation('Fintech')">✨ Explain Trend</button>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center text-center">
+                    <div class="text-4xl mb-4">⚕️</div>
+                    <h3 class="text-xl font-bold mb-2">HealthTech</h3>
+                    <p class="text-sm text-gray-400">A $390 billion sector with 104 unicorns, focused on solving critical issues like healthcare staffing shortages and patient safety with AI.</p>
+                    <button class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors" onclick="showTrendExplanation('HealthTech')">✨ Explain Trend</button>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center text-center">
+                    <div class="text-4xl mb-4">🌍</div>
+                    <h3 class="text-xl font-bold mb-2">Climate Tech</h3>
+                    <p class="text-sm text-gray-400">An accelerating sector projected to grow to $220B by 2035, driven by demand for sustainable solutions and net-zero goals.</p>
+                    <button class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors" onclick="showTrendExplanation('Climate Tech')">✨ Explain Trend</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="playbook" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">The Founder's Playbook: A Roadmap for Hyper-Growth</h2>
+                <p class="max-w-3xl mx-auto text-gray-400">A disruptive idea is not enough. Translating vision into a billion-dollar reality requires a meticulous operational playbook focused on a compelling value proposition, scalable systems, rapid user acquisition, and a resilient culture.</p>
+            </div>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-0">
+                <div class="p-4 bg-gray-800 rounded-lg shadow-lg text-center w-full md:w-1/5">
+                    <h4 class="font-bold">1. Disruptive Idea</h4>
+                    <p class="text-xs text-gray-400">Solve a massive, unmet need with a unique, scalable model.</p>
+                </div>
+                <div class="text-2xl font-bold text-cyan-400 mx-4 hidden md:block">→</div>
+                <div class="text-2xl font-bold text-cyan-400 my-2 md:hidden">↓</div>
+                <div class="p-4 bg-gray-800 rounded-lg shadow-lg text-center w-full md:w-1/5">
+                    <h4 class="font-bold">2. A-Team Assembly</h4>
+                    <p class="text-xs text-gray-400">Recruit world-class, experienced talent with complementary skills.</p>
+                </div>
+                <div class="text-2xl font-bold text-cyan-400 mx-4 hidden md:block">→</div>
+                 <div class="text-2xl font-bold text-cyan-400 my-2 md:hidden">↓</div>
+                <div class="p-4 bg-gray-800 rounded-lg shadow-lg text-center w-full md:w-1/5">
+                    <h4 class="font-bold">3. Achieve PMF</h4>
+                    <p class="text-xs text-gray-400">Gain early traction and validate demand with demonstrable user love.</p>
+                </div>
+                 <div class="text-2xl font-bold text-cyan-400 mx-4 hidden md:block">→</div>
+                 <div class="text-2xl font-bold text-cyan-400 my-2 md:hidden">↓</div>
+                <div class="p-4 bg-gray-800 rounded-lg shadow-lg text-center w-full md:w-1/5">
+                    <h4 class="font-bold">4. Hyper-Scale Funding</h4>
+                    <p class="text-xs text-gray-400">Secure massive, rapid funding through non-traditional VC paths.</p>
+                </div>
+                <div class="text-2xl font-bold text-cyan-400 mx-4 hidden md:block">→</div>
+                <div class="text-2xl font-bold text-cyan-400 my-2 md:hidden">↓</div>
+                <div class="p-4 bg-gray-800 rounded-lg shadow-lg text-center w-full md:w-1/5">
+                    <h4 class="font-bold">5. Scale & Dominate</h4>
+                    <p class="text-xs text-gray-400">Expand globally, leveraging scalable systems and a strong culture.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="funding" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Fueling the Rocket: The Venture Capital Gauntlet</h2>
+                <p class="max-w-3xl mx-auto text-gray-400">Mastering the VC landscape is paramount. The median unicorn raises $275M, but a 12-month timeline demands a radical departure from traditional funding, requiring a venture so compelling it attracts massive institutional capital at unprecedented speed.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-center mb-4">Typical Funding Stages for a Unicorn</h3>
+                    <p class="text-sm text-gray-400 text-center mb-4">This pyramid shows the median capital raised at each stage. A 12-month journey requires compressing this multi-year process, often by skipping to large, late-stage-style rounds.</p>
+                    <div class="space-y-2 flex flex-col items-center">
+                        <div class="bg-cyan-700 text-white p-3 rounded-md w-full md:w-1/2 text-center shadow-lg"><span class="font-bold">Series D+</span>: $200M+</div>
+                        <div class="bg-cyan-600 text-white p-3 rounded-md w-full md:w-[60%] text-center shadow-lg"><span class="font-bold">Series C</span>: $120M</div>
+                        <div class="bg-cyan-500 text-white p-3 rounded-md w-full md:w-[70%] text-center shadow-lg"><span class="font-bold">Series B</span>: $60M</div>
+                        <div class="bg-cyan-400 text-white p-3 rounded-md w-full md:w-[80%] text-center shadow-lg"><span class="font-bold">Series A</span>: $25M</div>
+                        <div class="bg-blue-400 text-white p-3 rounded-md w-full md:w-[90%] text-center shadow-lg"><span class="font-bold">Seed</span>: $8M</div>
+                        <div class="bg-blue-500 text-white p-3 rounded-md w-full text-center shadow-lg"><span class="font-bold">Pre-seed</span>: $1.5M</div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold text-center mb-4">Top VC Investment Criteria</h3>
+                    <p class="text-sm text-gray-400 text-center mb-4">Investors weigh multiple factors, but in the early stages of hyper-growth, the caliber of the team and the scale of the market opportunity are paramount.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start"><span class="text-cyan-400 font-bold text-xl mr-3">✓</span><div><strong class="text-white">Exceptional Team:</strong> Experienced, resilient, and coachable founders with deep domain expertise.</div></li>
+                        <li class="flex items-start"><span class="text-cyan-400 font-bold text-xl mr-3">✓</span><div><strong class="text-white">Massive Market (TAM):</strong> A huge, growing addressable market that can support venture-scale returns.</div></li>
+                        <li class="flex items-start"><span class="text-cyan-400 font-bold text-xl mr-3">✓</span><div><strong class="text-white">Disruptive Solution:</strong> A unique, scalable solution to a real, significant problem with a strong competitive moat.</div></li>
+                        <li class="flex items-start"><span class="text-cyan-400 font-bold text-xl mr-3">✓</span><div><strong class="text-white">Early Traction:</strong> Demonstrable product-market fit with initial customer adoption and positive feedback.</div></li>
+                        <li class="flex items-start"><span class="text-cyan-400 font-bold text-xl mr-3">✓</span><div><strong class="text-white">Scalable Business Model:</strong> A clear, viable path to monetization and profitability.</div></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="risks" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Navigating the Minefield: The Risks of Hyper-Growth</h2>
+                <p class="max-w-3xl mx-auto text-gray-400">The pursuit of extreme speed amplifies every startup risk. Operational overload, founder burnout, regulatory hurdles, and market volatility are not just possibilities, but probable bottlenecks that must be managed proactively.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+                <div class="bg-red-900/20 border border-red-500/30 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-2 text-red-300 flex items-center"><span class="text-2xl mr-2">🔥</span>Founder & Team Burnout</h3>
+                    <p class="text-sm text-gray-300">The intense, non-stop pressure of hyper-growth is a leading cause of failure. 53% of founders report working beyond healthy limits, leading to impaired judgment and threatening the company's success.</p>
+                    <button class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors" onclick="showRiskMitigation('Founder & Team Burnout')">✨ Mitigate Risk</button>
+                </div>
+                <div class="bg-amber-900/20 border border-amber-500/30 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-2 text-amber-300 flex items-center"><span class="text-2xl mr-2">⚖️</span>Regulatory Hurdles</h3>
+                    <p class="text-sm text-gray-300">Especially in AI and Fintech, complex rules around data privacy (GDPR, CCPA), ethics, and antitrust can cripple a startup. Nearly 75% of fintech startups fail due to preventable compliance issues.</p>
+                    <button class="mt-4 px-4 py-2 bg-amber-600 text-white rounded-md hover:bg-amber-700 transition-colors" onclick="showRiskMitigation('Regulatory Hurdles')">✨ Mitigate Risk</button>
+                </div>
+                <div class="bg-yellow-900/20 border border-yellow-500/30 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-2 text-yellow-300 flex items-center"><span class="text-2xl mr-2">⚙️</span>Operational Overload</h3>
+                    <p class="text-sm text-gray-300">Scaling faster than systems and processes can handle leads to inefficiencies, cash flow problems, reduced quality, and customer dissatisfaction. A solid business model must precede scale.</p>
+                    <button class="mt-4 px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors" onclick="showRiskMitigation('Operational Overload')">✨ Mitigate Risk</button>
+                </div>
+                <div class="bg-purple-900/20 border border-purple-500/30 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-bold mb-2 text-purple-300 flex items-center"><span class="text-2xl mr-2">📉</span>Market Volatility</h3>
+                    <p class="text-sm text-gray-300">Rising interest rates and economic uncertainty have shifted focus from "growth-at-all-costs" to sustainable growth, making funding rounds and exit opportunities more challenging.</p>
+                    <button class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors" onclick="showRiskMitigation('Market Volatility')">✨ Mitigate Risk</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-12 mt-16 bg-gray-900 border-t border-gray-800">
+        <h3 class="text-2xl font-bold mb-2 gradient-text">The Verdict: Beyond the 12-Month Horizon</h3>
+        <p class="max-w-3xl mx-auto text-gray-400 px-4">
+            While becoming a billionaire in 12 months remains an extraordinary long shot, the principles of hyper-growth—disruptive innovation, exceptional execution, operational excellence, and proactive risk management—provide a powerful blueprint for building any impactful and valuable tech enterprise. The pursuit forces a level of discipline and resilience that can create enduring value, regardless of the timeline.
+        </p>
+    </footer>
+
+    <div id="llmResponseModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle" class="text-2xl font-bold mb-4 text-white"></h3>
+            <div id="modalContent" class="text-gray-300">
+                <div class="spinner"></div>
+                <p class="text-center mt-4">Generating insight...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const tooltipTitleCallback = function(tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                  return label.join(' ');
+                } else {
+                  return label;
+                }
+            };
+
+            const wrapLabel = (label, maxWidth) => {
+                if (label.length <= maxWidth) {
+                    return label;
+                }
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > maxWidth) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const timeToUnicornData = {
+                labels: ['AI/ML', 'Consumer Mobile Apps', 'Fintech', 'Enterprise SaaS', 'Health Tech', 'Clean Tech'].map(l => wrapLabel(l, 16)),
+                datasets: [{
+                    label: 'Average Years to Unicorn',
+                    data: [3.4, 4.8, 5.9, 6.8, 8.2, 9.1],
+                    backgroundColor: '#00AEEF',
+                    borderColor: '#6DD4F2',
+                    borderWidth: 2,
+                    borderRadius: 5
+                }]
+            };
+
+            new Chart(document.getElementById('timeToUnicornChart'), {
+                type: 'bar',
+                data: timeToUnicornData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { 
+                                color: '#9CA3AF',
+                                font: { size: 12 }
+                            },
+                             title: {
+                                display: true,
+                                text: 'Years',
+                                color: '#9CA3AF'
+                            }
+                        },
+                        y: {
+                            grid: { color: 'transparent' },
+                             ticks: { 
+                                color: '#D1D5DB',
+                                font: { size: 12, weight: '600' }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1F2937',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 12 },
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    }
+                }
+            });
+
+            const unicornSectorData = {
+                labels: ['Fintech', 'Enterprise Software', 'E-commerce', 'AI/ML', 'HealthTech', 'Other'],
+                datasets: [{
+                    label: 'Number of Unicorns',
+                    data: [242, 239, 147, 136, 104, 332],
+                    backgroundColor: ['#004AAD', '#0079C2', '#00AEEF', '#6DD4F2', '#3b82f6', '#60a5fa'],
+                    borderColor: '#1F2937',
+                    borderWidth: 2
+                }]
+            };
+
+            new Chart(document.getElementById('unicornSectorChart'), {
+                type: 'doughnut',
+                data: unicornSectorData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#D1D5DB',
+                                font: { size: 12 },
+                                boxWidth: 15,
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1F2937',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 12 },
+                            callbacks: { title: tooltipTitleCallback }
+                        }
+                    }
+                }
+            });
+
+            // LLM Integration
+            const llmResponseModal = document.getElementById('llmResponseModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+
+            window.showModal = function(title, content) {
+                modalTitle.textContent = title;
+                modalContent.innerHTML = content;
+                llmResponseModal.style.display = 'flex';
+            };
+
+            window.closeModal = function() {
+                llmResponseModal.style.display = 'none';
+                modalContent.innerHTML = '<div class="spinner"></div><p class="text-center mt-4">Generating insight...</p>'; // Reset content
+            };
+
+            window.showTrendExplanation = async function(trendName) {
+                showModal(`Exploring: ${trendName}`, '<div class="spinner"></div><p class="text-center mt-4">Generating insight...</p>');
+                const prompt = `Explain the key characteristics and recent developments of the ${trendName} industry trend relevant to tech startups aiming for rapid growth. Focus on what makes it a high-potential area for innovation and investment. Keep the explanation concise, around 100-150 words.`;
+                
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        modalContent.innerHTML = `<p>${text}</p>`;
+                    } else {
+                        modalContent.innerHTML = '<p class="text-red-400">Failed to generate insight. Please try again.</p>';
+                    }
+                } catch (error) {
+                    modalContent.innerHTML = `<p class="text-red-400">Error: ${error.message}. Please check your network connection or try again later.</p>`;
+                }
+            };
+
+            window.showRiskMitigation = async function(riskName) {
+                showModal(`Mitigating: ${riskName}`, '<div class="spinner"></div><p class="text-center mt-4">Generating suggestions...</p>');
+                const prompt = `Suggest 3-5 concise, actionable strategies for a tech startup to mitigate the risk of ${riskName} while pursuing rapid growth. Focus on practical steps. Keep it brief.`;
+                
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        modalContent.innerHTML = `<p>${text}</p>`;
+                    } else {
+                        modalContent.innerHTML = '<p class="text-red-400">Failed to generate suggestions. Please try again.</p>';
+                    }
+                } catch (error) {
+                    modalContent.innerHTML = `<p class="text-red-400">Error: ${error.message}. Please check your network connection or try again later.</p>`;
+                }
+            };
+        });
+    </script>
+
+</body>
+</html>

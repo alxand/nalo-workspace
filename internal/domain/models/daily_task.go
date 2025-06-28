@@ -6,6 +6,7 @@ import (
 
 type DailyTask struct {
 	ID                int64     `gorm:"primaryKey" json:"id"`
+	UserID            int64     `gorm:"not null;index" json:"user_id" validate:"required"`
 	Day               string    `json:"day"`
 	Date              time.Time `json:"date"`
 	StartTime         time.Time `json:"start_time"`
@@ -13,7 +14,11 @@ type DailyTask struct {
 	Status            string    `json:"status"`
 	Score             int       `json:"score"`
 	ProductivityScore int       `json:"productivity_score"`
+	CreatedAt         time.Time `json:"created_at"`
+	UpdatedAt         time.Time `json:"updated_at"`
 
+	// Relationships
+	User         User           `gorm:"foreignKey:UserID" json:"user,omitempty"`
 	Deliverables []Deliverable  `gorm:"foreignKey:TaskID" json:"deliverables"`
 	Activities   []Activity     `gorm:"foreignKey:TaskID" json:"activities"`
 	ProductFocus []ProductFocus `gorm:"foreignKey:TaskID" json:"product_focus"`
